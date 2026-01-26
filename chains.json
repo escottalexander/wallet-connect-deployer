@@ -1,0 +1,123 @@
+[
+  {
+    "name": "Sepolia",
+    "chainId": 11155111,
+    "rpcUrl": "https://ethereum-sepolia-rpc.publicnode.com"
+  },
+  {
+    "name": "Zora",
+    "chainId": 7777777,
+    "rpcUrl": "https://rpc.zora.energy"
+  },
+  {
+    "name": "Base",
+    "chainId": 8453,
+    "rpcUrl": "https://mainnet.base.org"
+  },
+  {
+    "name": "Ethereum",
+    "chainId": 1,
+    "rpcUrl": "https://eth.llamarpc.com"
+  },
+  {
+    "name": "BSC",
+    "chainId": 56,
+    "rpcUrl": "https://bsc-dataseed.bnbchain.org"
+  },
+  {
+    "name": "Optimism",
+    "chainId": 10,
+    "rpcUrl": "https://mainnet.optimism.io"
+  },
+  {
+    "name": "Arbitrum",
+    "chainId": 42161,
+    "rpcUrl": "https://arb1.arbitrum.io/rpc"
+  },
+  {
+    "name": "Unichain",
+    "chainId": 130,
+    "rpcUrl": "https://mainnet.unichain.org"
+  },
+  {
+    "name": "Polygon",
+    "chainId": 137,
+    "rpcUrl": "https://polygon-rpc.com"
+  },
+  {
+    "name": "Gnosis",
+    "chainId": 100,
+    "rpcUrl": "https://rpc.gnosischain.com"
+  },
+  {
+    "name": "Celo",
+    "chainId": 42220,
+    "rpcUrl": "https://forno.celo.org"
+  },
+  {
+    "name": "Ink",
+    "chainId": 57073,
+    "rpcUrl": "https://rpc-gel.inkonchain.com"
+  },
+  {
+    "name": "Katana",
+    "chainId": 747474,
+    "rpcUrl": "https://rpc.katana.network"
+  },
+  {
+    "name": "Monad",
+    "chainId": 143,
+    "rpcUrl": "https://rpc.monad.xyz"
+  },
+  {
+    "name": "World",
+    "chainId": 480,
+    "rpcUrl": "https://worldchain-mainnet.g.alchemy.com/public"
+  },
+  {
+    "name": "Soneium",
+    "chainId": 1868,
+    "rpcUrl": "https://rpc.soneium.org"
+  },
+  {
+    "name": "Blast",
+    "chainId": 81457,
+    "rpcUrl": "https://rpc.blast.io"
+  },
+  {
+    "name": "Avalanche",
+    "chainId": 43114,
+    "rpcUrl": "https://api.avax.network/ext/bc/C/rpc"
+  },
+  {
+    "name": "Mantle",
+    "chainId": 5000,
+    "rpcUrl": "https://rpc.mantle.xyz"
+  },
+  {
+    "name": "Ronin",
+    "chainId": 2020,
+    "rpcUrl": "https://api.roninchain.com/rpc"
+  },
+  {
+    "name": "HyperEVM",
+    "chainId": 999,
+    "rpcUrl": "https://rpc.hyperliquid.xyz/evm"
+  },
+  {
+    "name": "Stable",
+    "chainId": 988,
+    "rpcUrl": "https://rpc.stable.xyz"
+  },
+  {
+    "name": "Sonic",
+    "chainId": 146,
+    "rpcUrl": "https://rpc.soniclabs.com"
+  },
+  {
+    "name": "Zircuit",
+    "chainId": 48900,
+    "rpcUrl": "https://mainnet.zircuit.com"
+  }
+]
+

@@ -1,0 +1,14 @@
+{
+  "name": "wallet-connect-deployer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy:wc": "node tools/deploy-walletconnect.mjs"
+  },
+  "dependencies": {
+    "@walletconnect/ethereum-provider": "^2.16.1",
+    "ethers": "^6.13.5",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
+
