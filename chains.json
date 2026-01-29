@@ -1,5 +1,25 @@
 [
   {
+    "name": "Ethereum",
+    "chainId": 1,
+    "rpcUrl": "https://eth.llamarpc.com"
+  },
+  {
+    "name": "Polygon",
+    "chainId": 137,
+    "rpcUrl": "https://polygon-rpc.com"
+  },
+  {
+    "name": "Blast",
+    "chainId": 81457,
+    "rpcUrl": "https://rpc.blast.io"
+  },
+  {
+    "name": "Sonic",
+    "chainId": 146,
+    "rpcUrl": "https://rpc.soniclabs.com"
+  },
+  {
     "name": "Sepolia",
     "chainId": 11155111,
     "rpcUrl": "https://ethereum-sepolia-rpc.publicnode.com"
@@ -13,11 +33,6 @@
     "name": "Base",
     "chainId": 8453,
     "rpcUrl": "https://mainnet.base.org"
-  },
-  {
-    "name": "Ethereum",
-    "chainId": 1,
-    "rpcUrl": "https://eth.llamarpc.com"
   },
   {
     "name": "BSC",
@@ -38,11 +53,6 @@
     "name": "Unichain",
     "chainId": 130,
     "rpcUrl": "https://mainnet.unichain.org"
-  },
-  {
-    "name": "Polygon",
-    "chainId": 137,
-    "rpcUrl": "https://polygon-rpc.com"
   },
   {
     "name": "Gnosis",
@@ -79,11 +89,7 @@
     "chainId": 1868,
     "rpcUrl": "https://rpc.soneium.org"
   },
-  {
-    "name": "Blast",
-    "chainId": 81457,
-    "rpcUrl": "https://rpc.blast.io"
-  },
+
   {
     "name": "Avalanche",
     "chainId": 43114,
@@ -108,11 +114,6 @@
     "name": "Stable",
     "chainId": 988,
     "rpcUrl": "https://rpc.stable.xyz"
-  },
-  {
-    "name": "Sonic",
-    "chainId": 146,
-    "rpcUrl": "https://rpc.soniclabs.com"
   },
   {
     "name": "Zircuit",

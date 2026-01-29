@@ -349,7 +349,7 @@ export const DEPLOYMENTS = {
 // Ethereum
   1: {
     UniversalRecoveryDelegate: {
-      address: "0x49222cc5273ddCFde0E2A7987d64F9D6D272967C",
+      address: "0x681BcBC1fBc1c8A2f1F5b4A43e6D38c5CA220892",
       abi: UNIVERSAL_RECOVERY_DELEGATE_ABI,
     },
   },
@@ -389,7 +389,7 @@ export const DEPLOYMENTS = {
 // Polygon
   137: {
     UniversalRecoveryDelegate: {
-      address: "0x49222cc5273ddCFde0E2A7987d64F9D6D272967C",
+      address: "0x681BcBC1fBc1c8A2f1F5b4A43e6D38c5CA220892",
       abi: UNIVERSAL_RECOVERY_DELEGATE_ABI,
     },
   },
@@ -405,7 +405,7 @@ export const DEPLOYMENTS = {
 // Sonic
   146: {
     UniversalRecoveryDelegate: {
-      address: "0x90b0f446179b4c61566FB41f50e45E75fDa92861",
+      address: "0x681BcBC1fBc1c8A2f1F5b4A43e6D38c5CA220892",
       abi: UNIVERSAL_RECOVERY_DELEGATE_ABI,
     },
   },
@@ -517,7 +517,7 @@ export const DEPLOYMENTS = {
 // Blast
   81457: {
     UniversalRecoveryDelegate: {
-      address: "0x49222cc5273ddCFde0E2A7987d64F9D6D272967C",
+      address: "0x681BcBC1fBc1c8A2f1F5b4A43e6D38c5CA220892",
       abi: UNIVERSAL_RECOVERY_DELEGATE_ABI,
     },
   },

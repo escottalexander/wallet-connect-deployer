@@ -4,7 +4,7 @@
       "name": "Ethereum",
       "contracts": {
         "UniversalRecoveryDelegate": {
-          "address": "0x49222cc5273ddCFde0E2A7987d64F9D6D272967C",
+          "address": "0x681BcBC1fBc1c8A2f1F5b4A43e6D38c5CA220892",
           "abi": [
             {
               "type": "constructor",
@@ -30,6 +30,49 @@
                   "name": "",
                   "type": "address",
                   "internalType": "address"
+                }
+              ],
+              "stateMutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "eip712Domain",
+              "inputs": [],
+              "outputs": [
+                {
+                  "name": "fields",
+                  "type": "bytes1",
+                  "internalType": "bytes1"
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "internalType": "string"
+                },
+                {
+                  "name": "version",
+                  "type": "string",
+                  "internalType": "string"
+                },
+                {
+                  "name": "chainId",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "verifyingContract",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "salt",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                },
+                {
+                  "name": "extensions",
+                  "type": "uint256[]",
+                  "internalType": "uint256[]"
                 }
               ],
               "stateMutability": "view"
@@ -64,6 +107,26 @@
                       "internalType": "bytes"
                     }
                   ]
+                },
+                {
+                  "name": "authorizer",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "signature",
+                  "type": "bytes",
+                  "internalType": "bytes"
                 }
               ],
               "outputs": [],
@@ -71,16 +134,84 @@
             },
             {
               "type": "function",
-              "name": "paymaster",
-              "inputs": [],
-              "outputs": [
+              "name": "nonces",
+              "inputs": [
                 {
-                  "name": "",
+                  "name": "authorizer",
                   "type": "address",
                   "internalType": "address"
                 }
               ],
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ],
               "stateMutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "recoveryIntentDigest",
+              "inputs": [
+                {
+                  "name": "recoveryAddress",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "calls",
+                  "type": "tuple[]",
+                  "internalType": "struct UniversalRecoveryDelegate.Call[]",
+                  "components": [
+                    {
+                      "name": "to",
+                      "type": "address",
+                      "internalType": "address"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256",
+                      "internalType": "uint256"
+                    },
+                    {
+                      "name": "data",
+                      "type": "bytes",
+                      "internalType": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ],
+              "outputs": [
+                {
+                  "name": "digest",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                },
+                {
+                  "name": "callsHash",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                }
+              ],
+              "stateMutability": "view"
+            },
+            {
+              "type": "event",
+              "name": "EIP712DomainChanged",
+              "inputs": [],
+              "anonymous": false
             },
             {
               "type": "error",
@@ -115,12 +246,59 @@
             },
             {
               "type": "error",
-              "name": "NotPaymaster",
+              "name": "IntentExpired",
               "inputs": [
                 {
-                  "name": "caller",
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "nowTs",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ]
+            },
+            {
+              "type": "error",
+              "name": "InvalidNonce",
+              "inputs": [
+                {
+                  "name": "signer",
                   "type": "address",
                   "internalType": "address"
+                },
+                {
+                  "name": "expected",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "provided",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ]
+            },
+            {
+              "type": "error",
+              "name": "InvalidShortString",
+              "inputs": []
+            },
+            {
+              "type": "error",
+              "name": "InvalidSignature",
+              "inputs": []
+            },
+            {
+              "type": "error",
+              "name": "StringTooLong",
+              "inputs": [
+                {
+                  "name": "str",
+                  "type": "string",
+                  "internalType": "string"
                 }
               ]
             }
@@ -1356,7 +1534,7 @@
       "name": "Polygon",
       "contracts": {
         "UniversalRecoveryDelegate": {
-          "address": "0x49222cc5273ddCFde0E2A7987d64F9D6D272967C",
+          "address": "0x681BcBC1fBc1c8A2f1F5b4A43e6D38c5CA220892",
           "abi": [
             {
               "type": "constructor",
@@ -1382,6 +1560,49 @@
                   "name": "",
                   "type": "address",
                   "internalType": "address"
+                }
+              ],
+              "stateMutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "eip712Domain",
+              "inputs": [],
+              "outputs": [
+                {
+                  "name": "fields",
+                  "type": "bytes1",
+                  "internalType": "bytes1"
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "internalType": "string"
+                },
+                {
+                  "name": "version",
+                  "type": "string",
+                  "internalType": "string"
+                },
+                {
+                  "name": "chainId",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "verifyingContract",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "salt",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                },
+                {
+                  "name": "extensions",
+                  "type": "uint256[]",
+                  "internalType": "uint256[]"
                 }
               ],
               "stateMutability": "view"
@@ -1416,6 +1637,26 @@
                       "internalType": "bytes"
                     }
                   ]
+                },
+                {
+                  "name": "authorizer",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "signature",
+                  "type": "bytes",
+                  "internalType": "bytes"
                 }
               ],
               "outputs": [],
@@ -1423,16 +1664,84 @@
             },
             {
               "type": "function",
-              "name": "paymaster",
-              "inputs": [],
-              "outputs": [
+              "name": "nonces",
+              "inputs": [
                 {
-                  "name": "",
+                  "name": "authorizer",
                   "type": "address",
                   "internalType": "address"
                 }
               ],
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ],
               "stateMutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "recoveryIntentDigest",
+              "inputs": [
+                {
+                  "name": "recoveryAddress",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "calls",
+                  "type": "tuple[]",
+                  "internalType": "struct UniversalRecoveryDelegate.Call[]",
+                  "components": [
+                    {
+                      "name": "to",
+                      "type": "address",
+                      "internalType": "address"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256",
+                      "internalType": "uint256"
+                    },
+                    {
+                      "name": "data",
+                      "type": "bytes",
+                      "internalType": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ],
+              "outputs": [
+                {
+                  "name": "digest",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                },
+                {
+                  "name": "callsHash",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                }
+              ],
+              "stateMutability": "view"
+            },
+            {
+              "type": "event",
+              "name": "EIP712DomainChanged",
+              "inputs": [],
+              "anonymous": false
             },
             {
               "type": "error",
@@ -1467,12 +1776,59 @@
             },
             {
               "type": "error",
-              "name": "NotPaymaster",
+              "name": "IntentExpired",
               "inputs": [
                 {
-                  "name": "caller",
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "nowTs",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ]
+            },
+            {
+              "type": "error",
+              "name": "InvalidNonce",
+              "inputs": [
+                {
+                  "name": "signer",
                   "type": "address",
                   "internalType": "address"
+                },
+                {
+                  "name": "expected",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "provided",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ]
+            },
+            {
+              "type": "error",
+              "name": "InvalidShortString",
+              "inputs": []
+            },
+            {
+              "type": "error",
+              "name": "InvalidSignature",
+              "inputs": []
+            },
+            {
+              "type": "error",
+              "name": "StringTooLong",
+              "inputs": [
+                {
+                  "name": "str",
+                  "type": "string",
+                  "internalType": "string"
                 }
               ]
             }
@@ -1790,11 +2146,78 @@
       "name": "Sonic",
       "contracts": {
         "UniversalRecoveryDelegate": {
-          "address": "0x90b0f446179b4c61566FB41f50e45E75fDa92861",
+          "address": "0x681BcBC1fBc1c8A2f1F5b4A43e6D38c5CA220892",
           "abi": [
+            {
+              "type": "constructor",
+              "inputs": [
+                {
+                  "name": "_paymaster",
+                  "type": "address",
+                  "internalType": "address"
+                }
+              ],
+              "stateMutability": "nonpayable"
+            },
             {
               "type": "receive",
               "stateMutability": "payable"
+            },
+            {
+              "type": "function",
+              "name": "PAYMASTER",
+              "inputs": [],
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "address",
+                  "internalType": "address"
+                }
+              ],
+              "stateMutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "eip712Domain",
+              "inputs": [],
+              "outputs": [
+                {
+                  "name": "fields",
+                  "type": "bytes1",
+                  "internalType": "bytes1"
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "internalType": "string"
+                },
+                {
+                  "name": "version",
+                  "type": "string",
+                  "internalType": "string"
+                },
+                {
+                  "name": "chainId",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "verifyingContract",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "salt",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                },
+                {
+                  "name": "extensions",
+                  "type": "uint256[]",
+                  "internalType": "uint256[]"
+                }
+              ],
+              "stateMutability": "view"
             },
             {
               "type": "function",
@@ -1826,10 +2249,111 @@
                       "internalType": "bytes"
                     }
                   ]
+                },
+                {
+                  "name": "authorizer",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "signature",
+                  "type": "bytes",
+                  "internalType": "bytes"
                 }
               ],
               "outputs": [],
               "stateMutability": "payable"
+            },
+            {
+              "type": "function",
+              "name": "nonces",
+              "inputs": [
+                {
+                  "name": "authorizer",
+                  "type": "address",
+                  "internalType": "address"
+                }
+              ],
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ],
+              "stateMutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "recoveryIntentDigest",
+              "inputs": [
+                {
+                  "name": "recoveryAddress",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "calls",
+                  "type": "tuple[]",
+                  "internalType": "struct UniversalRecoveryDelegate.Call[]",
+                  "components": [
+                    {
+                      "name": "to",
+                      "type": "address",
+                      "internalType": "address"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256",
+                      "internalType": "uint256"
+                    },
+                    {
+                      "name": "data",
+                      "type": "bytes",
+                      "internalType": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ],
+              "outputs": [
+                {
+                  "name": "digest",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                },
+                {
+                  "name": "callsHash",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                }
+              ],
+              "stateMutability": "view"
+            },
+            {
+              "type": "event",
+              "name": "EIP712DomainChanged",
+              "inputs": [],
+              "anonymous": false
             },
             {
               "type": "error",
@@ -1859,6 +2383,64 @@
                   "name": "reason",
                   "type": "bytes",
                   "internalType": "bytes"
+                }
+              ]
+            },
+            {
+              "type": "error",
+              "name": "IntentExpired",
+              "inputs": [
+                {
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "nowTs",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ]
+            },
+            {
+              "type": "error",
+              "name": "InvalidNonce",
+              "inputs": [
+                {
+                  "name": "signer",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "expected",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "provided",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ]
+            },
+            {
+              "type": "error",
+              "name": "InvalidShortString",
+              "inputs": []
+            },
+            {
+              "type": "error",
+              "name": "InvalidSignature",
+              "inputs": []
+            },
+            {
+              "type": "error",
+              "name": "StringTooLong",
+              "inputs": [
+                {
+                  "name": "str",
+                  "type": "string",
+                  "internalType": "string"
                 }
               ]
             }
@@ -5638,7 +6220,7 @@
       "name": "Blast",
       "contracts": {
         "UniversalRecoveryDelegate": {
-          "address": "0x49222cc5273ddCFde0E2A7987d64F9D6D272967C",
+          "address": "0x681BcBC1fBc1c8A2f1F5b4A43e6D38c5CA220892",
           "abi": [
             {
               "type": "constructor",
@@ -5664,6 +6246,49 @@
                   "name": "",
                   "type": "address",
                   "internalType": "address"
+                }
+              ],
+              "stateMutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "eip712Domain",
+              "inputs": [],
+              "outputs": [
+                {
+                  "name": "fields",
+                  "type": "bytes1",
+                  "internalType": "bytes1"
+                },
+                {
+                  "name": "name",
+                  "type": "string",
+                  "internalType": "string"
+                },
+                {
+                  "name": "version",
+                  "type": "string",
+                  "internalType": "string"
+                },
+                {
+                  "name": "chainId",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "verifyingContract",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "salt",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                },
+                {
+                  "name": "extensions",
+                  "type": "uint256[]",
+                  "internalType": "uint256[]"
                 }
               ],
               "stateMutability": "view"
@@ -5698,6 +6323,26 @@
                       "internalType": "bytes"
                     }
                   ]
+                },
+                {
+                  "name": "authorizer",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "signature",
+                  "type": "bytes",
+                  "internalType": "bytes"
                 }
               ],
               "outputs": [],
@@ -5705,16 +6350,84 @@
             },
             {
               "type": "function",
-              "name": "paymaster",
-              "inputs": [],
-              "outputs": [
+              "name": "nonces",
+              "inputs": [
                 {
-                  "name": "",
+                  "name": "authorizer",
                   "type": "address",
                   "internalType": "address"
                 }
               ],
+              "outputs": [
+                {
+                  "name": "",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ],
               "stateMutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "recoveryIntentDigest",
+              "inputs": [
+                {
+                  "name": "recoveryAddress",
+                  "type": "address",
+                  "internalType": "address"
+                },
+                {
+                  "name": "calls",
+                  "type": "tuple[]",
+                  "internalType": "struct UniversalRecoveryDelegate.Call[]",
+                  "components": [
+                    {
+                      "name": "to",
+                      "type": "address",
+                      "internalType": "address"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256",
+                      "internalType": "uint256"
+                    },
+                    {
+                      "name": "data",
+                      "type": "bytes",
+                      "internalType": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ],
+              "outputs": [
+                {
+                  "name": "digest",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                },
+                {
+                  "name": "callsHash",
+                  "type": "bytes32",
+                  "internalType": "bytes32"
+                }
+              ],
+              "stateMutability": "view"
+            },
+            {
+              "type": "event",
+              "name": "EIP712DomainChanged",
+              "inputs": [],
+              "anonymous": false
             },
             {
               "type": "error",
@@ -5749,12 +6462,59 @@
             },
             {
               "type": "error",
-              "name": "NotPaymaster",
+              "name": "IntentExpired",
               "inputs": [
                 {
-                  "name": "caller",
+                  "name": "deadline",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "nowTs",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ]
+            },
+            {
+              "type": "error",
+              "name": "InvalidNonce",
+              "inputs": [
+                {
+                  "name": "signer",
                   "type": "address",
                   "internalType": "address"
+                },
+                {
+                  "name": "expected",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                },
+                {
+                  "name": "provided",
+                  "type": "uint256",
+                  "internalType": "uint256"
+                }
+              ]
+            },
+            {
+              "type": "error",
+              "name": "InvalidShortString",
+              "inputs": []
+            },
+            {
+              "type": "error",
+              "name": "InvalidSignature",
+              "inputs": []
+            },
+            {
+              "type": "error",
+              "name": "StringTooLong",
+              "inputs": [
+                {
+                  "name": "str",
+                  "type": "string",
+                  "internalType": "string"
                 }
               ]
             }

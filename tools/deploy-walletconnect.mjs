@@ -792,6 +792,24 @@ async function main() {
         const populated = await create2Factory.deploy.populateTransaction(deployData, saltBytes32, { value: valueWei });
         populated.from = signerAddress;
 
+        const decodeReturnedAddress = (ret) => {
+          if (!ret || ret === "0x") return null;
+          // Expected return type: address (ABI-encoded as 32 bytes, right-aligned)
+          if (ret.length !== 66) return null;
+          return ethers.getAddress(`0x${ret.slice(26)}`);
+        };
+
+        const simulateFactoryDeploy = async (gasLimit) => {
+          // Some RPCs under-estimate gas for nested CREATE2. We dry-run an eth_call and
+          // check if the factory returns the expected non-zero address.
+          const ret = await rpcProvider.call({
+            ...populated,
+            from: signerAddress,
+            gasLimit
+          });
+          return decodeReturnedAddress(ret);
+        };
+
         let gasLimitToUse = gasLimitOverride;
         if (!gasLimitToUse) {
           const est = await rpcProvider.estimateGas(populated);
@@ -801,10 +819,82 @@ async function main() {
           console.log(`Using --gas-limit=${gasLimitToUse.toString()}`);
         }
 
+        // Preflight the CREATE2 call: if we get a zero return address, it's almost always OOG
+        // during creation (factory doesn't revert). Bump gas to avoid "mined but no code" cases.
+        try {
+          const returned = await simulateFactoryDeploy(gasLimitToUse);
+          if (returned === ethers.ZeroAddress) {
+            const MAX_CREATE2_GAS = 5_000_000n;
+            const bumped = gasLimitOverride
+              ? null
+              : (gasLimitToUse * 3n < MAX_CREATE2_GAS ? gasLimitToUse * 3n : MAX_CREATE2_GAS);
+
+            if (!bumped) {
+              throw new Error(
+                `CREATE2 factory returned zero address in a dry-run with --gas-limit=${gasLimitToUse.toString()}. ` +
+                  `Increase --gas-limit or --gas-multiplier.`
+              );
+            }
+
+            const returned2 = await simulateFactoryDeploy(bumped);
+            if (returned2 && returned2 !== ethers.ZeroAddress) {
+              console.warn(
+                `WARNING: RPC gas estimate was too low for CREATE2 on ${chain.name}. ` +
+                  `Bumping gasLimit from ${gasLimitToUse.toString()} -> ${bumped.toString()}`
+              );
+              gasLimitToUse = bumped;
+            } else {
+              throw new Error(
+                `CREATE2 dry-run still returned zero address even with gasLimit=${bumped.toString()}. ` +
+                  `The initCode may be failing/reverting or the chain's call gas cap is too low.`
+              );
+            }
+          } else if (returned && returned.toLowerCase() !== predicted.toLowerCase()) {
+            console.warn(
+              `WARNING: CREATE2 dry-run returned ${returned}, but predicted address is ${predicted}. ` +
+                `Proceeding, but this suggests a non-standard factory.`
+            );
+          }
+        } catch (e) {
+          // If the RPC errors during eth_call (rate limit, gas cap, etc), don't block sending.
+          console.warn(
+            `WARNING: CREATE2 dry-run failed on ${chain.name} (${chain.chainId}) (continuing): ${e?.message ?? String(e)}`
+          );
+        }
+
+        // Preflight funds: WalletConnect signers will reject if balance < gasLimit * maxFeePerGas (+ value).
+        try {
+          const feeData = await rpcProvider.getFeeData();
+          const maxFeePerGas = feeData.maxFeePerGas ?? feeData.gasPrice;
+          if (maxFeePerGas != null) {
+            const bal = await rpcProvider.getBalance(signerAddress);
+            const maxCost = gasLimitToUse * maxFeePerGas + valueWei;
+            if (bal < maxCost) {
+              const short = maxCost - bal;
+              throw new Error(
+                `Insufficient funds on ${chain.name} (chainId=${chain.chainId}). ` +
+                  `balance=${bal.toString()} wei, maxCost≈${maxCost.toString()} wei (gasLimit=${gasLimitToUse.toString()}, maxFeePerGas≈${maxFeePerGas.toString()}). ` +
+                  `Short by ${short.toString()} wei. Fund ${signerAddress} with native gas token on this chain or lower --gas-limit.`
+              );
+            }
+          }
+        } catch (e) {
+          // If we can't fetch fee data / balance (RPC limitations), don't block sending.
+          // But do block on an explicit insufficient-funds error we generated above.
+          if (String(e?.message ?? "").includes("Insufficient funds on")) throw e;
+          console.warn(
+            `WARNING: Balance preflight skipped on ${chain.name} (${chain.chainId}) (continuing): ${e?.message ?? String(e)}`
+          );
+        }
+
         const tx = await signer.sendTransaction({ ...populated, gasLimit: gasLimitToUse });
         console.log(`Deploy tx: ${tx.hash}`);
         const receipt = await rpcProvider.waitForTransaction(tx.hash);
         console.log(`Mined in block: ${receipt?.blockNumber}`);
+
+        if (receipt && receipt.status != null && receipt.status !== 1) {
+          throw new Error(`Deployment transaction reverted (status=${receipt.status})`);
+        }
 
         const deployedCode = await rpcProvider.getCode(predicted);
         if (!deployedCode || deployedCode === "0x") {
